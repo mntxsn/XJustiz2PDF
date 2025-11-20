@@ -6,13 +6,17 @@ xjustiz2pdf is a desktop application that converts German *xJustiz* electronic l
 
 ---
 
-## Bedienungsanleitung (Deutsch)
+## Bedienungsanleitung
 
-### Zweck
+### Über die Anwendung
 Mit xjustiz2pdf können Nachrichten im xJustiz‑Format (ERV) sowie elektronische Akten der deutschen Justiz / Verwaltung komfortabel in PDF‑Dokumente umgewandelt werden. Die Anwendung bietet eine grafische Oberfläche, um Dokumente und Akten(teile) auszuwählen, zu sortieren und mit einem Inhaltsverzeichnis in ein einzelnes PDF-Dokument zu exportieren. 
 
-Die Anwendung ist weitestgehend plattformunabhängig und läuft somit unter Windows, Linux und macOS. Der Export von PDF-Dokumenten und Bilddateien wird ohne die Installation von Zusatzprogrammen unterstützt. Sofern die Anwender [LibreOffice](https://de.libreoffice.org/download/download/) auf ihrem System installiert haben, können diverse Office-Formate konvertiert und beim Export in die PDF-Akte berücksichtigt werden. Falls auch die Anwendung [Ghostscript](https://ghostscript.com/releases/gsdnld.html) auf dem Anwendersystem installiert ist, besteht zudem die Möglichkeit, die Dateigröße der Akte deutlich zu reduzieren. 
+Die Anwendung ist weitestgehend plattformunabhängig und läuft somit unter Windows, Linux und macOS. 
+- Der Export von PDF-Dokumenten und Bilddateien wird ohne die Installation von Zusatzprogrammen unterstützt. 
+- Sofern die Anwender [LibreOffice](https://de.libreoffice.org/download/download/) auf ihrem System installiert haben, können diverse Office-Formate konvertiert und beim Export in die PDF-Akte berücksichtigt werden.
+- Falls auch die Anwendung [Ghostscript](https://ghostscript.com/releases/gsdnld.html) auf dem Anwendersystem installiert ist, besteht zudem die Möglichkeit, die Dateigröße der Akte deutlich zu reduzieren. 
 
+![Screenshot der Xjustiz2PDF Benutzeroberfläche](https://github.com/digidigital/XJustiz2PDF/blob/main/Images/Screenshot_XJustiz2PDF_Konverter.png)
 
 ## Installation und Start der Anwendung
 ### Installation über PyPI - Python Package Index  
