@@ -64,6 +64,8 @@ Nach dem Start öffnet sich das Hauptfenster mit folgenden Bereichen:
 ## Hinweis
 Die Ergebnisse des Exports können variieren, da es eine Vielzahl von Aktenverwaltungssoftware gibt und sich die E-Akten daher in ihremm Aufbau unterscheiden können. Da es sich bei der Umwandlung der E-Akte um einen Umwandlungsprozess handelt, entsprechen die resultierenden Dateien nicht mehr dem Original. Es ist nicht auszuschließen, dass Informationen (z.B. gehen Inhaltverzeichnisse der Originale verloren) und Details (Qualitätsverlust durch Komprimierung) verloren gehen. Trage Sorge, dass du die Originalakte zur späteren Verwendung archivierst.  
 
+Für die Arbeit mit der Originalakte empfehle ich [openXJV](https://openxjv.de).
+
 ---
 
 ### Bedienung Schritt für Schritt
