@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xjustiz2pdf"
+version = "0.1.0"
+description = "Diese Desktopanwendung konvertiert XJustiz-Akten / E-Akten in eine Gesamt-PDF (PDF-Converter for electronic records)"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+authors = [
+  { name = "Björn Seipel", email = "support@digidigital.de" }
+]
+dependencies = [
+  "PySide6",
+  "lxml",
+  "pypdf",
+  "fpdf2",
+  "Pillow",
+  "docx2pdf"
+]
+requires-python = ">=3.9"
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: End Users/Desktop",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Office/Business :: Legal"
+]
+
+keywords = ["xjustiz", "pdf", "akten", "konvertierung", "gericht", "e-akte"]
+
+[project.scripts]
+xjustiz2pdf = "xjustiz2pdf.__main__:main"
+
+[project.urls]
+Homepage = "https://xjustiz2pdf.digidigital.de"
+Repository = "https://github.com/digidigital/XJustiz2PDF"
+Support = "https://github.com/digidigital/XJustiz2PDF/issues"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["xjustiz2pdf"]
+exclude-package-data = { "xjustiz2pdf.fonts" = ["*"], "xjustiz2pdf.icons" = ["*"] }
+
+[tool.setuptools.package-data]
+"xjustiz2pdf" = ["icons/*", "fonts/*"]

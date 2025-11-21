@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  
+  <title>XJustiz2PDF – Konverter für XJustiz E‑Akte zu PDF</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+  <link rel="icon" href="/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/icons/favicon-48x48.png" sizes="48x48" type="image/png">
+  <link rel="icon" href="/icons/favicon-64x64.png" sizes="64x64" type="image/png">
+  <link rel="icon" href="/icons/favicon-128x128.png" sizes="128x128" type="image/png">
+  <link rel="icon" href="/icons/favicon-256x256.png" sizes="256x256" type="image/png">  
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="XJustiz2PDF konvertiert xJustiz-Nachrichten (ERV) und E‑Akten in eine strukturierte PDF‑Akte mit Inhaltsverzeichnis. Plattformunabhängig; optionale LibreOffice- und Ghostscript-Integration für Office‑Konvertierung bzw. PDF‑Optimierung." />
+
+<style>
+    :root{
+      --font-size-base: clamp(16px,1.1vw,18px);
+      --font-size-nav: clamp(16px,1.1vw,18px);
+      --color-accent: #2a6ebb;
+      --header-bg: rgba(42,110,187,0.75);
+      --muted: #666;
+      --panel-bg: #f7f9fb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Arial,sans-serif;
+      font-size:var(--font-size-base);
+      line-height:1.6;
+      background:#fff;
+      color:#222;
+    }
+    header{
+      position:fixed;top:0;left:0;right:0;
+      background:var(--header-bg);color:#fff;
+      padding:.8rem 1.2rem;display:flex;justify-content:space-between;align-items:center;
+      z-index:1000;backdrop-filter:blur(6px);
+    }
+    header strong{font-size:1.05rem}
+    nav{display:flex;gap:1.1rem}
+    nav a{color:#fff;text-decoration:none;font-weight:500;font-size:var(--font-size-nav)}
+    nav a:hover{text-decoration:underline}
+    .menu-toggle{display:none;font-size:1.6rem;background:none;border:0;color:#fff;cursor:pointer}
+    @media(max-width:768px){
+      nav{display:none;flex-direction:column;position:absolute;top:100%;right:0;background:var(--header-bg);width:240px;padding:1rem}
+      nav.show{display:flex}
+      .menu-toggle{display:block}
+    }
+    main{padding:6rem 1rem 3rem;max-width:1000px;margin:auto}
+    section{scroll-margin-top:5rem;margin-bottom:3.5rem}
+    h1,h2,h3{font-weight:600;margin-bottom:.5rem}
+    h1{font-size:1.8rem;border-bottom:2px solid var(--color-accent);padding-bottom:.3rem}
+    h2{font-size:1.3rem;margin-top:1.5rem;color:var(--color-accent)}
+    h3{font-size:1.05rem;margin-top:1rem}
+    ul{padding-left:1.2rem}
+    code{background:#f4f4f4;padding:.2rem .4rem;border-radius:3px;font-size:.95em}
+    pre{background:#f4f4f4;padding:1rem;overflow-x:auto}
+    .panel{background:var(--panel-bg);border:1px solid #e3e7ea;padding:1rem;border-radius:6px}
+    .screenshot{width:100%;max-width:100%;border:1px solid #ddd;border-radius:6px;margin-top:.75rem}
+    footer{padding:2rem;text-align:center;font-size:.9rem;color:var(--muted);border-top:1px solid #ddd}
+    #datenschutz{display:none;margin-top:1rem;font-size:.85rem;color:#444;text-align:left;max-width:800px;margin-left:auto;margin-right:auto}
+    #datenschutz-link{display:inline-block;margin-top:.5rem;color:var(--color-accent);cursor:pointer;text-decoration:underline}
+  </style>
+</head>
+<body>
+<header>
+  <div><strong>XJustiz2PDF</strong></div>
+  <button class="menu-toggle" aria-label="Menü">☰</button>
+  <nav>
+    <a href="#intro">Einführung</a>
+    <a href="#features">Funktionen</a>
+    <a href="#install">Installation</a>
+    <a href="#gui">Bedienung</a>
+    <a href="#error">Hilfe</a>
+    <a href="#notes">Tipps</a>
+    <a href="#links">Links</a>
+  </nav>
+</header>
+
+<main id="intro">
+  <section>
+    <h1>XJustiz2PDF</h1>
+    <div class="panel">
+      <p><strong>XJustiz2PDF</strong> wandelt XJustiz‑Nachrichten (ERV) und elektronische Akten (E‑Akte) in eine einzelne, strukturierte PDF‑Akte um. Die erzeugte PDF enthält ein Inhaltsverzeichnis, das die Originalstruktur der Akte abbildet. Zielgruppe sind Anwender:innen und Entwickler:innen, die mit E-Akten arbeiten, diese archivieren oder weiterverteilen müssen.</p>
+      <p class="muted" style="color:var(--muted);margin-top:.25rem">Plattformen: Windows, Linux, macOS. Native PDF- und Bildkonvertierung; optionale Erweiterungen für Office‑Formate und PDF‑Optimierung über LibreOffice und Ghostscript.</p>
+      <p>Als Alternative zur PDF-Umwandlung mit Xjustiz2PDF empfehle ich den XJustiz-Viewer <a href="https://openxjv.de" target="_blank" rel="noopener">openXJV</a>.</p>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>Funktionen ✨</h2>
+    <ul>
+      <li><strong>Strukturtreue PDF‑Akte</strong> mit Inhaltsverzeichnis/Bookmarks entsprechend der Aktenbaumstruktur</li>
+      <li><strong>GUI mit Baumansicht</strong> zur gezielten Auswahl von Aktenstrukturen.</li>
+      <li><strong>Filter‑Mechanismus</strong> (Leerzeichen‑getrennte) Stichworte zum gezielten Ausschluss von Dokumenten (z. B. "Signatur")</li>
+      <li><strong>Sortieroptionen</strong> – Originalreihenfolge, aufsteigend oder absteigend nach Veraktungsdatum</li>
+      <li><strong>Platzhalterseiten</strong> für nicht unterstützte oder fehlende Dateien</li>
+      <li><strong>Optionale Nachbearbeitung</strong> via Ghostscript: Qualitätsprofile (screen → ebook → printer → prepress) zur Dateigrößen‑/Qualitätssteuerung</li>
+      <li><strong>Office‑Konvertierung</strong> (wenn LibreOffice installiert): Wandelt Office‑Formate in PDF, damit sie in die Akte integriert werden können</li>
+      <li><strong>Robuste Fehlerbehandlung</strong> und informative Statusanzeigen während des Exports</li>
+    </ul>
+  </section>
+
+  <section id="install">
+    <h2>Installation 🔧</h2>
+    <h3>Windows‑Installer</h3>
+    <p>Download: <a href="https://github.com/digidigital/XJustiz2PDF/releases" target="_blank">GitHub Releases</a></p>
+
+
+    <p class="panel" style="margin-top:.5rem">
+      <strong>Wichtig</strong>: Die zusätzliche Installation von <a href="https://de.libreoffice.org/download/download/" target="_blank" rel="noopener">LibreOffice</a> ist optional, erweitert die Anwendung jedoch um die Möglichkeit, Office‑Formate in PDFs zu konvertieren, so dass sie in die PDF‑Akte übernommen werden können. Auch eine separate Installation von <a href="https://ghostscript.com/releases/gsdnld.html" target="_blank" rel="noopener">Ghostscript</a> ist optional, ermöglicht jedoch die nachträgliche Größenreduktion und Qualitätssteuerung der erzeugten PDF‑Akte mittels definierter Profile.
+    </p>
+
+    <h3>PyPI (empfohlen für Linux und macOS)</h3>
+    <pre><code>pip install xjustiz2pdf</code></pre>
+    <p>Start</p>
+    <pre><code>python -m xjustiz2pdf
+# oder
+xjustiz2pdf
+</code></pre>
+    <p class="panel" style="margin-top:.5rem">
+      Die Hinweise zu LibreOffice und Ghostscript gelten auch für Installationen ohne Windows‑Installer: LibreOffice macht Office‑Dokumente konvertierbar; Ghostscript bietet zusätzliche Optionen zur Qualitätsanpassung und Größenreduktion der finalen PDF‑Akte.
+    </p>
+  </section>
+
+  <section id="gui">
+    <h2>Hauptfenster und Bedienung 🖥️</h2>
+
+    <p>Das Hauptfenster ist in funktionale Bereiche unterteilt. Nachfolgend werden die Bedienelemente und ihre Auswirkungen beschrieben, damit du den Export kontrolliert und reproduzierbar durchführst.</p>
+
+    <img class="screenshot" alt="Screenshot der xjustiz2pdf Benutzeroberfläche mit Eingabefeldern, Baumansicht und Exportoptionen" src="./Screenshot_XJustiz2PDF_Konverter.png" />
+
+    <h3>Eingabe</h3>
+    <p>Wähle eine XML‑Datei oder eine ZIP‑Datei mit einer <code>xjustiz_nachricht.xml</code> in der obersten Ebene. Beim Laden wird die Aktenstruktur analysiert und in der Baumansicht abgebildet. ZIP‑Archive werden automatisch entpackt und verarbeitet; relative Pfade innerhalb der Akte bleiben erhalten.</p>
+
+    <h3>Baumansicht</h3>
+    <ul>
+      <li><strong>Checkboxen:</strong> Haken setzen bedeutet: Elemente (Ordner oder Dokumente) werden in die PDF‑Akte übernommen.</li>
+      <li><strong>Teilweise Auswahl („-“):</strong> Erzeugt einen leeren Eintrag im Inhaltsverzeichnis, ohne die im markierten Eintrag enthaltenen Dokumente zu übernehmen.</li>
+      <li><strong>Reihenfolge:</strong> Die Struktur der xjustiz_nachricht.xml bestimmt die Standardreihenfolge. Wird eine andere Sortierung gewählt, so beeinflusst dies die Reihenfolge der Dokumente innerhalb der jeweiligen Ordner.</li>
+    </ul>
+
+    <h3>Alle Haken entfernen</h3>
+    <p>Setzt alle Checkboxen zurück; praktisch für einen schnellen Neustart der Auswahl.</p>
+
+    <h3>Ausgabe</h3>
+    <p>Definiere den Zielpfad für die zu erzeugende PDF‑Akte. Ist kein gültiger Zielpfad gesetzt, bleibt die Schaltfläche <strong>PDF erzeugen</strong> deaktiviert.</p>
+
+    <h3>Ausfiltern</h3>
+    <p>Gib mit Leerzeichen getrennte Stichworte ein, die aus dem Export ausgeschlossen werden sollen (z. B. <code>protokoll</code>). Die Filterung wirkt als Ausschlussliste: getroffene Dokumenttitel werden nicht exportiert.</p>
+
+    <h3>Optionen</h3>
+    <ul>
+      <li><strong>Nur Originale/Repräsentate exportieren</strong> — Wenn aktiviert, werden automatisch Dokumente ausgelassen, die nicht als Original oder Repräsentat gekennzeichnet sind (z. B. Signaturprotokolle oder Transfervermerke).</li>
+      <li><strong>Flaches Inhaltsverzeichnis</strong> — Ignoriert die Hierarchie und legt alle ausgewählten Dokumente als gleichrangige Einträge in das Inhaltsverzeichnis.</li>
+      <li><strong>Sortierung</strong> — Originalreihenfolge / aufsteigend / absteigend (nach Veraktungsdatum). Die Wahl beeinflusst die Reihenfolge im Inhaltsverzeichnis und damit die Lesbarkeit chronologisch oder strukturell.</li>
+    </ul>
+
+    <h3>Optionale Nachbearbeitung</h3>
+    <p>Wenn Ghostscript vorhanden ist, wird eine Sektion zur Nachbearbeitung angezeigt. Die Profile wirken sich folgendermaßen aus:</p>
+    <ul>
+      <li><strong>screen</strong> — starke Kompression, niedrige Qualität, sehr kleine Datei</li>
+      <li><strong>ebook</strong> — moderate Kompression, geeignet für Bildschirmnutzung</li>
+      <li><strong>printer</strong> — geringere Kompression, guter Kompromiss zwischen Qualität und Größe</li>
+      <li><strong>prepress</strong> — minimale Kompression, maximale Qualität, große Dateien</li>
+    </ul>
+
+    <h3>PDF erzeugen</h3>
+    <p>Die Schaltfläche startet den Exportprozess. Sie wird aktiv und farblich hervorgehoben, sobald ein Eingabe‑ und Ausgabepfad gesetzt und mindestens ein Element ausgewählt ist. Der Fortschritt wird im Statusbereich angezeigt; Fehler oder fehlende Dateien werden als Hinweise protokolliert, und Platzhalterseiten ersetzen nicht verwertbare Dokumente.</p>
+  </section>
+  <section id="error">
+    <h2>Hilfe bei Problemen 🛠️</h2>
+    <p>xjustiz2pdf versucht, den Exportprozess so robust wie möglich zu gestalten. Die folgenden Verhaltensweisen helfen bei der Einschätzung und Behebung von Problemen:</p>
+    <ul>
+      <li><strong>Nicht‑PDF‑Dateien:</strong> Sofern möglich werden Bild‑ und Office‑Formate in PDF konvertiert. Für Office‑Formate ist LibreOffice erforderlich; ohne LibreOffice werden diese Dateien durch Platzhalterseiten ersetzt.</li>
+      <li><strong>Fehlende Dateien:</strong> Fehlende oder referenzierte Dateien werden durch eine Platzhalterseite mit erläuterndem Hinweis ersetzt, damit der Export nicht abbricht.</li>
+      <li><strong>Dokumente ohne Datum:</strong> Nicht alle Dokumente verfügen über ein Veraktungsdatum (z. B. Repräsentate reiner Systemdaten). Diese können leider nicht sinnvoll sortiert werden.</li>
+      <li><strong>Leere Auswahl / alles ausgefiltert:</strong> Führt zu einer PDF mit einer einzelnen Informationsseite (Sinngemäß :„Keine Dokumente ausgewählt“).</li>
+      <li><strong>Fehler bei Office‑Konvertierung:</strong> Prüfe, ob LibreOffice installiert und im Systempfad erreichbar ist.</li>
+      <li><strong>Ghostscript‑Fehler:</strong> Wenn die nachträgliche Nachbearbeitung fehlschlägt, deaktiviere vorübergehend die Nachbearbeitung, um den Export selbst zu testen.</li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>Tipps 📝</h2>
+    <p>Empfohlene Vorgehensweisen, um verlässliche, reproduzierbare PDF‑Akte‑Exporte zu erzielen:</p>
+    <ul>
+      <li><strong>Originalakte archivieren:</strong> Bewahre die Originaldateien stets separat auf — die konvertierten PDFs sind nicht identisch mit den Originalen und können Informationsverluste (z. B. interne Inhaltsverzeichnisse, Metadaten, Bildqualität) aufweisen.</li>
+      <li><strong>Filter bewusst einsetzen:</strong> Verwende die Ausfilter‑Funktion, um wiederkehrende, unerwünschte Dokumente (z. B. Signaturprotokolle) sicher auszuschließen.</li>
+      <li><strong>Teilweise Auswahl für Struktur:</strong> Nutze die teilweise Auswahl („-“), wenn die Ordnerstruktur im Inhaltsverzeichnis erhalten bleiben, die in den Unterordnern enthaltenen Dokumente aber nicht exportiert werden sollen.</li>
+      <li><strong>Ghostscript gezielt einsetzen:</strong> Für Archivzwecke empfiehlt sich ein höherer Qualitätsmodus (printer oder prepress). Für schnelle Durchsichten oder Weitergabe sind screen/ebook geeigneter.</li>
+      <li><strong>LibreOffice für Office‑Formate:</strong> Wenn Akten Office‑Dokumente enthalten und deren Inhalte in der PDF‑Akte benötigt werden, installiere LibreOffice auf dem System, damit diese Formate zuverlässig konvertiert werden.</li>
+    </ul>
+  </section>
+
+  <section id="links">
+    <h2>Nützliche Links 🔗</h2>
+    <ul>
+      <li><a href="https://github.com/digidigital/XJustiz2PDF" target="_blank" rel="noopener">xjustiz2pdf auf GitHub</a></li>
+      <li><a href="https://pypi.org/project/xjustiz2pdf/" target="_blank" rel="noopener">xjustiz2pdf auf PyPI</a></li>
+      <li><a href="https://de.libreoffice.org/download/download/" target="_blank" rel="noopener">LibreOffice Download</a></li>
+      <li><a href="https://ghostscript.com/releases/gsdnld.html" target="_blank" rel="noopener">Ghostscript Download</a></li>
+      <li><a href="https://openxjv.de" target="_blank" rel="noopener">openXJV - XJustiz-Viewer</a></li>
+      <li><a href="https://coverup.digidigital.de/" target="_blank" rel="noopener">CoverUp - PDF-Dateien weißen / schwärzen</a></li>
+    </ul>
+  </section>
+
+  <section id="license">
+    <h2>Lizenz 📄</h2>
+    <p>xjustiz2pdf ist Open Source und steht unter der <strong>GPLv3</strong>-Lizenz. Beiträge, Fehlerberichte und Pull‑Requests sind auf dem GitHub‑Repository willkommen.</p>
+  </section>
+</main>
+
+<footer>
+  <div>2025 FOSS by 🙋 Björn Seipel – digidigital – support﹫digidigital.de</div>
+  <div style="margin-top:.6rem;">
+    <a id="datenschutz-link" href="#" aria-expanded="false">Datenschutzhinweis</a>
+  </div>
+
+  <div id="datenschutz" aria-hidden="true">
+    <h3>Datenschutzhinweis</h3>
+    <p>Diese Micro‑Website speichert keine personenbezogenen Daten auf dem Server und setzt keine Cookies. Es werden auch keine externen Ressourcen geladen. Im Rahmen der Webseitenbereitstellung fallen Daten in den Serverlogs an, die lediglich für administrative Zwecke genutzt und nach einem Monat gelöscht werden: IP-Adresse, Datum/Uhrzeit der Anfrage, Name und URL der aufgerufenen Datei, übertragene Datenmenge, Erfolgsmeldung, Browser- und Betriebssystemkennung, ggf. Adresse einer verlinkenden Website.</p>
+    <p>Support‑Anfragen per E‑Mail werden ausschließlich zur Beantwortung deiner Anfrage verwendet.</p>
+    <p>Kontakt: Björn Seipеⅼ, Dοrnbаchѕtr. １O２, 6144О ОЬеrurѕеⅼ</p>
+  </div>
+</footer>
+
+<script>
+  // Responsives Burger Menü
+  (function(){
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('header nav');
+    if (toggle && nav) {
+      toggle.addEventListener('click', () => nav.classList.toggle('show'));
+    }
+    // Schließe Menü beim Klick auf Navigationseintrag (mobile)
+    document.querySelectorAll('header nav a').forEach(a => a.addEventListener('click', () => {
+      if (nav.classList.contains('show')) nav.classList.remove('show');
+    }));
+  })();
+
+  // Datenschutzhinweis Toggle (versteckt / zeigt Inhalt)
+  (function(){
+    const link = document.getElementById('datenschutz-link');
+    const box = document.getElementById('datenschutz');
+    if (!link || !box) return;
+    // initial versteckt
+    box.style.display = 'none';
+    link.setAttribute('aria-expanded', 'false');
+    box.setAttribute('aria-hidden', 'true');
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isHidden = box.style.display === 'none' || box.style.display === '';
+      box.style.display = isHidden ? 'block' : 'none';
+      link.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      box.setAttribute('aria-hidden', isHidden ? 'false' : 'true');
+      if (isHidden) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  })();
+</script>
+</body>
+</html>
