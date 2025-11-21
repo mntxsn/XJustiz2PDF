@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import os, subprocess, tempfile, shutil
+import os, sys, subprocess, tempfile, shutil
 from PySide6.QtCore import QObject, Signal
 from .utils import prepare_input, cleanup_temp, debug
 from .parser import AktenParser
@@ -119,7 +119,17 @@ class PdfWorker(QObject):
                 f"-sOutputFile={tmp_out}",
                 pdf_path
             ]
-            subprocess.run(cmd, check=True)
+
+            # Plattformabhängige Flags setzen
+            kwargs = {}
+            if sys.platform.startswith("win"):
+                CREATE_NO_WINDOW = 0x08000000
+                kwargs["creationflags"] = CREATE_NO_WINDOW
+            else:
+                kwargs["stdout"] = subprocess.DEVNULL
+                kwargs["stderr"] = subprocess.DEVNULL
+
+            subprocess.run(cmd, check=True, **kwargs)
 
             self.status_cb_safe("Ghostscript-Optimierung abgeschlossen.")
             debug(f"[Worker] Ghostscript-Ausgabe: {tmp_out}")
