@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xjustiz2pdf"
-version = "0.1.0"
+version = "0.1.1"
 description = "Diese Desktopanwendung konvertiert XJustiz-Akten / E-Akten in eine Gesamt-PDF (PDF-Converter for electronic records)"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -29,7 +29,6 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Operating System :: OS Independent",
-  "Topic :: Office/Business :: Legal"
 ]
 
 keywords = ["xjustiz", "pdf", "akten", "konvertierung", "gericht", "e-akte"]
