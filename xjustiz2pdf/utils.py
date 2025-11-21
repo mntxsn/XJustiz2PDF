@@ -67,7 +67,6 @@ def find_ghostscript() -> str | None:
         except ImportError:
             debug("[Utils] winreg nicht verfügbar (kein Windows)")
             return None
-        print('lala')
         reg_paths = [
             r"SOFTWARE\GPL Ghostscript",
             r"SOFTWARE\WOW6432Node\GPL Ghostscript"

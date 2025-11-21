@@ -72,10 +72,10 @@ class MainWindow(QMainWindow,
 
         # Setup der GUI-Elemente
         self._setup_ui()
+        self._setup_persistence_hooks()
         self.statusBar().showMessage("Bereit.")
 
     def _setup_ui(self):
-        """Zentrale Methode zum Aufbau der GUI, ruft die Setup-Methoden der Mixins auf."""
         central = QWidget()
         self.setCentralWidget(central)
         grid = QGridLayout(central)
@@ -91,7 +91,7 @@ class MainWindow(QMainWindow,
         grid.addWidget(self.input_edit, 0, 1)
         grid.addWidget(self.input_btn, 0, 2)
 
-        # TreeView (aus gui_tree.py)
+        # TreeView
         self._setup_tree(grid)
 
         # Ausgabe
@@ -117,8 +117,11 @@ class MainWindow(QMainWindow,
         self.sort_label = QLabel("Sortierreihenfolge (Veraktungsdatum):")
         self.sort_combo = QComboBox()
         self.sort_combo.addItems(["original", "absteigend", "aufsteigend"])
-        self.sort_combo.setCurrentText(self.settings.value("sort_order", "original"))
 
+        # Automatisches Laden der gespeicherten Werte
+        self.only_originals_cb.setChecked(self.settings.value("only_originals", False, type=bool))
+        self.flat_outline_cb.setChecked(self.settings.value("flat_outline", False, type=bool))
+        self.sort_combo.setCurrentText(self.settings.value("sort_order", "original"))
         options_row = QHBoxLayout()
         options_row.addWidget(self.only_originals_cb)
         options_row.addStretch(1)
@@ -129,19 +132,16 @@ class MainWindow(QMainWindow,
         options_row.addStretch(1)
         grid.addLayout(options_row, 6, 0, 1, 3)
 
-        # Nachbearbeitungsoptionen nur wenn Ghostscript gefunden
+        # Nachbearbeitung
         if self.ghostscript_path:
             self.post_group = QGroupBox("Optionale Nachbearbeitungsoptionen")
             post_layout = QGridLayout()
-
             self.post_none_rb = QRadioButton("Keine Nachbearbeitung (Standard)")
             self.post_none_rb.setChecked(True)
-
             self.post_gs_rb = QRadioButton("Qualität anpassen mit Ghostscript")
             self.post_gs_quality_label = QLabel("Qualitätsstufe:")
             self.post_gs_quality_combo = QComboBox()
             self.post_gs_quality_combo.addItems(["screen", "ebook", "printer", "prepress"])
-
             row_gs = QHBoxLayout()
             row_gs.addWidget(self.post_gs_rb)
             row_gs.addStretch(1)
@@ -149,11 +149,9 @@ class MainWindow(QMainWindow,
             row_gs_params.addWidget(self.post_gs_quality_label)
             row_gs_params.addWidget(self.post_gs_quality_combo)
             row_gs_params.addStretch(1)
-
             post_layout.addWidget(self.post_none_rb, 0, 0, 1, 3)
             post_layout.addLayout(row_gs, 1, 0, 1, 3)
             post_layout.addLayout(row_gs_params, 2, 0, 1, 3)
-
             self.post_group.setLayout(post_layout)
             grid.addWidget(self.post_group, 7, 0, 1, 3)
 
@@ -167,39 +165,47 @@ class MainWindow(QMainWindow,
         self.update_build_button_style()
         grid.addWidget(self.build_btn, 8, 0, 1, 3)
 
-        # Build button
-        self.build_btn = QPushButton("PDF erstellen")
-        self.build_btn.setToolTip(
-            "Wird aktiv (grün), sobald XML geladen, Akteninhalt gewählt und Ziel-PDF gesetzt."
-        )
-        self.build_btn.clicked.connect(self.build_pdf)
-        self.build_btn.setEnabled(False)
-        self.update_build_button_style()
-        grid.addWidget(self.build_btn, 8, 0, 1, 3)
-
-        # Links unterhalb des Build-Buttons
+        # Links
         links_layout = QHBoxLayout()
-
         self.help_link = QLabel(
             '<a href="https://github.com/digidigital/XJustiz2PDF/issues">Hilfe & Support</a>'
         )
         self.homepage_link = QLabel(
             '<a href="https://xjustiz2pdf.digidigital.de">XJustiz2PDF Homepage</a>'
         )
-
-        # Schriftgröße 9pt setzen
         self.help_link.setStyleSheet("font-size: 8pt;")
         self.homepage_link.setStyleSheet("font-size: 8pt;")
-
-        # Links klickbar machen
         self.help_link.setOpenExternalLinks(True)
         self.homepage_link.setOpenExternalLinks(True)
-
-        # Symmetrische Anordnung
         links_layout.addStretch(1)
         links_layout.addWidget(self.help_link)
         links_layout.addStretch(2)
         links_layout.addWidget(self.homepage_link)
         links_layout.addStretch(1)
-
         grid.addLayout(links_layout, 9, 0, 1, 3)
+
+    def _setup_persistence_hooks(self):
+        self.filter_edit.textChanged.connect(
+            lambda txt: self.settings.setValue("filter_terms", txt)
+        )
+        self.only_originals_cb.toggled.connect(
+            lambda checked: self.settings.setValue("only_originals", checked)
+        )
+        self.flat_outline_cb.toggled.connect(
+            lambda checked: self.settings.setValue("flat_outline", checked)
+        )
+        self.sort_combo.currentTextChanged.connect(
+            lambda txt: self.settings.setValue("sort_order", txt)
+        )
+        if hasattr(self, "post_none_rb"):
+            self.post_none_rb.toggled.connect(
+                lambda checked: self.settings.setValue("post_none", checked)
+            )
+        if hasattr(self, "post_gs_rb"):
+            self.post_gs_rb.toggled.connect(
+                lambda checked: self.settings.setValue("post_ghostscript", checked)
+            )
+        if hasattr(self, "post_gs_quality_combo"):
+            self.post_gs_quality_combo.currentTextChanged.connect(
+                lambda txt: self.settings.setValue("post_gs_quality", txt)
+            )
