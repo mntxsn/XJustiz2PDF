@@ -36,7 +36,7 @@ Start des Prgramms mit:
   ```
 
 ### Installation mit Windows-Installer
-Den Windows-Installer findest du auf [Github](https://github.com/digidigital/XJustiz2PDF/releases) oder direkt unter [Xjustiz2PDF](https://xjustiz2pdf.digidigital.de)
+Den Windows-Installer findest du direkt hier auf [Github](https://github.com/digidigital/XJustiz2PDF/releases).
 
 Optional:
 - Installiere LibreOffice, um Office-Formate zu konvertieren. Download von: [LibreOffice Download-Seite](https://de.libreoffice.org/download/download/)
