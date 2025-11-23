@@ -12,6 +12,8 @@ Bitte beachten Sie: Informationen zu weiteren Abhängigkeiten dieser Module find
 | fpdf2     | MIT License                               | [fpdf2 GitHub](https://github.com/py-pdf/fpdf2) |
 | Pillow    | Historical PIL License (BSD-artig, GPL-kompatibel) | [Pillow PyPI](https://pypi.org/project/Pillow/) |
 | docx2pdf  | MIT License                               | [docx2pdf GitHub](https://github.com/AlJohri/docx2pdf) |
+| requests  | Apache-2.0 license       | [requests GitHub](https://github.com/psf/requests) |
+| pyinstaller | GPL-2.0-or-later WITH Bootloader-exception / Apache-2.0 license | [pyinstaller GitHub](https://github.com/pyinstaller/pyinstaller) |
 
 ---
 

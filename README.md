@@ -1,4 +1,3 @@
-
 # xjustiz2pdf
 
 **English introduction:**  
@@ -57,7 +56,7 @@ Nach dem Start öffnet sich das Hauptfenster mit folgenden Bereichen:
   
 - **Optionale Nachbearbeitungsoptionen** (Wird nur angezeigt, wenn Ghostscript installiert wurde)
    - Keine Nachbearbeitung(Standard)
-   - Qualität anpassen mit Ghostscript. Die Qualitässtufen vn niedriger zu hoher Qualität lauten "screen"→"ebook"→"printer"→"prepress" 
+   - Qualität anpassen mit Ghostscript.  Die Qualitässtufen von niedriger zu hoher Qualität lauten "screen"→"ebook"→"printer"→"prepress". Dieser Bearbeitungsschritt kann in Abhängigkeit vom Umfang des Akteninhalts sehr viel Zeit benötigen! 
 
 - **PDF erzeugen**: Startet den Umwandlungsprozess. Wird aktiviert und grün, sobald Ein- und Ausgabedatei festgelegt wurden und mindestens ein Haken gesetzt wurde.  
  

@@ -26,11 +26,20 @@ from pypdf import PdfReader
 from .utils import debug
 
 
+def sanitize_outline_title(name: str) -> str:
+    """
+    Bereinigt den Titel für Outline-Einträge ersetzt / und \\ durch 
+    optisch identische Unicode ZeichenSlash 
+    """
+    return (name or "").replace("/", "∕").replace("\\", "⧵")
+
+
 def add_outline_safe(writer, title: str, page_index: int, parent=None):
     """Outline-Eintrag robust anlegen; bei Fehler None zurückgeben."""
     try:
-        bm = writer.add_outline_item(title, page_index, parent=parent)
-        debug(f"[Outline] Bookmark gesetzt: '{title}' auf Seite {page_index}")
+        safe_title = sanitize_outline_title(title)
+        bm = writer.add_outline_item(safe_title, page_index, parent=parent)
+        debug(f"[Outline] Bookmark gesetzt: '{safe_title}' auf Seite {page_index}")
         return bm
     except Exception as e:
         debug(f"[Outline] Konnte Bookmark '{title}' nicht setzen: {e}")

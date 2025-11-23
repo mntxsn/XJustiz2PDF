@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox, QTreeWidgetItem
 from PySide6.QtCore import QThread, Qt
 from .worker import PdfWorker
 from .pdfbuilder import PDFBuilder
 from .utils import debug
+from .parser import DocNode
 
 
 class BuildHandlerMixin:
@@ -69,39 +70,45 @@ class BuildHandlerMixin:
         self.build_btn.setEnabled(ready)
         self.update_build_button_style()
 
-    def _collect_disabled_paths(self) -> set[str]:
+    def _collect_disabled_paths(self) -> set[tuple[str, ...]]:
         """
         Liefert nur Pfade, die explizit Unchecked sind.
         PartiallyChecked wird NICHT als disabled behandelt.
         """
-        paths = set()
+        paths: set[tuple[str, ...]] = set()
         def walk(item):
             marker = item.data(0, Qt.UserRole)
             state = item.checkState(0)
             if state == Qt.Unchecked and marker:
-                paths.add(str(marker))
+                # Konvertiere Liste → Tuple
+                if isinstance(marker, list):
+                    marker = tuple(marker)
+                paths.add(marker)
             for i in range(item.childCount()):
                 walk(item.child(i))
         for i in range(self.tree.topLevelItemCount()):
             walk(self.tree.topLevelItem(i))
-        debug(f"[GUI] collect_disabled_paths: total={len(paths)} examples={list(paths)[:5]}")
+        debug(f"[GUI] collect_disabled_paths: total={len(paths)} examples={[ ' / '.join(p) for p in list(paths)[:5] ]}")
         return paths
 
-    def _collect_check_states(self) -> dict[str, int]:
+    def _collect_check_states(self) -> dict[tuple[str, ...], int]:
         """
         Sammelt alle States aus dem Baum, inkl. PartiallyChecked.
         """
-        states: dict[str, int] = {}
+        states: dict[tuple[str, ...], int] = {}
         def walk(item):
             marker = item.data(0, Qt.UserRole)
             state = item.checkState(0)
             if marker is not None:
-                states[str(marker)] = state
+                # Konvertiere Liste → Tuple
+                if isinstance(marker, list):
+                    marker = tuple(marker)
+                states[marker] = state
             for i in range(item.childCount()):
                 walk(item.child(i))
         for i in range(self.tree.topLevelItemCount()):
             walk(self.tree.topLevelItem(i))
-        debug(f"[GUI] collect_check_states: total={len(states)} examples={list(states.items())[:5]}")
+        debug(f"[GUI] collect_check_states: total={len(states)} examples={[(' / '.join(k), v) for k, v in list(states.items())[:5]]}")
         return states
 
     def build_pdf(self):
@@ -132,8 +139,8 @@ class BuildHandlerMixin:
         self.disabled_nodes_paths = self._collect_disabled_paths()
         builder_check_states = self._collect_check_states()
 
-        debug(f"[GUI] disabled_paths={list(self.disabled_nodes_paths)}")
-        debug(f"[GUI] builder_check_states(keys)={list(builder_check_states.keys())[:10]}")
+        debug(f"[GUI] disabled_paths={[ ' / '.join(p) for p in list(self.disabled_nodes_paths) ]}")
+        debug(f"[GUI] builder_check_states(keys)={[ ' / '.join(k) for k in list(builder_check_states.keys())[:10] ]}")
 
         self.set_enabled(False)
         self.statusBar().showMessage("Die Akte wird konvertiert. Dies kann einige Zeit in Anspruch nehmen.")
@@ -165,3 +172,21 @@ class BuildHandlerMixin:
         self.worker.error.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
         self.thread.start()
+
+
+    # Hilfsfunktion zum Aufbau des Tree mit Tupel-Markern
+    def add_node_to_tree(self, node: DocNode, parent_item, path_here: tuple[str, ...]):
+        item = QTreeWidgetItem(parent_item)
+        item.setText(0, node.anzeigename or "Unbenannt")
+        item.setCheckState(0, Qt.Unchecked)
+        # WICHTIG: Marker als Tupel speichern
+        marker = path_here
+        item.setData(0, Qt.UserRole, marker)
+
+        for child in node.children:
+            if child.is_folder():
+                child_path = path_here + (child.anzeigename or "Akte",)
+                self.add_node_to_tree(child, item, child_path)
+            elif child.is_doc():
+                doc_path = path_here + (child.anzeigename or "Dokument",)
+                self.add_node_to_tree(child, item, doc_path)

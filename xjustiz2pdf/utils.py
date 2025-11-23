@@ -1,4 +1,4 @@
-# Xjustiz2PDF is a desktop application that converts German xJustiz 
+# XJustiz2PDF is a desktop application that converts German xJustiz 
 # e‑files (E-Akte) into a single PDF document
 # Copyright (C) 2025 Björn Seipel
 #
@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """
-Dieses Modul enthält Hilfsfunktionen für das Projekt.
+Dieses Modul unils.py enthält Hilfsfunktionen für das Projekt.
 
 - debug(): einfache Debug-Ausgabe, wenn DEBUG=True gesetzt ist.
 - prepare_input(): entpackt ZIP-Dateien oder prüft XML-Dateien und liefert Pfade zurück.

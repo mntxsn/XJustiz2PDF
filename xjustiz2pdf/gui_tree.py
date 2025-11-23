@@ -44,22 +44,25 @@ class TreeHandlerMixin:
             placeholder_item = QTreeWidgetItem(["Einzeldateien"])
             placeholder_item.setFlags(placeholder_item.flags() | Qt.ItemIsUserCheckable)
             placeholder_item.setCheckState(0, Qt.Checked)
-            placeholder_item.setData(0, Qt.UserRole, "ROOT_DOCS")
+            # Marker als Tupel speichern
+            placeholder_item.setData(0, Qt.UserRole, ("ROOT_DOCS",))
             self.tree.addTopLevelItem(placeholder_item)
         for ch in self.root_node.children:
             if ch.is_folder():
-                item = self._create_tree_item_for_node(ch, parent_path="")
+                item = self._create_tree_item_for_node(ch, parent_path=())
                 self.tree.addTopLevelItem(item)
                 
         self.tree.expandAll()
         self.update_build_button_state()
 
-    def _create_tree_item_for_node(self, node, parent_path: str) -> QTreeWidgetItem:
+    def _create_tree_item_for_node(self, node, parent_path: tuple[str, ...]) -> QTreeWidgetItem:
         item = QTreeWidgetItem([node.anzeigename or "Akte"])
         item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
         item.setCheckState(0, Qt.Checked)
-        marker = f"{parent_path}/{node.anzeigename or 'Akte'}" if parent_path else (node.anzeigename or "Akte")
+        marker = parent_path + (node.anzeigename or "Akte",)
         item.setData(0, Qt.UserRole, marker)
+
+        # Nur Ordner als Tree-Items; keine Dokumente hinzufügen
         for ch in node.children:
             if ch.is_folder():
                 child_item = self._create_tree_item_for_node(ch, parent_path=marker)
@@ -76,8 +79,10 @@ class TreeHandlerMixin:
                 parent.setCheckState(0, Qt.PartiallyChecked)
                 path_marker = parent.data(0, Qt.UserRole)
                 if path_marker:
-                    self.check_states[str(path_marker)] = Qt.PartiallyChecked
-                    self.disabled_nodes_paths.add(str(path_marker))
+                    if isinstance(path_marker, list):
+                        path_marker = tuple(path_marker)
+                    # PartiallyChecked: NICHT als disabled markieren
+                    self.check_states[path_marker] = Qt.PartiallyChecked
             parent = self._parent_of(parent)
 
     def _propagate_up_on_child_unchecked(self, item: QTreeWidgetItem):
@@ -88,8 +93,11 @@ class TreeHandlerMixin:
                     parent.setCheckState(0, Qt.Unchecked)
                     path_marker = parent.data(0, Qt.UserRole)
                     if path_marker:
-                        self.check_states[str(path_marker)] = Qt.Unchecked
-                        self.disabled_nodes_paths.add(str(path_marker))
+                        if isinstance(path_marker, list):
+                            path_marker = tuple(path_marker)
+                        # Unchecked: als disabled markieren
+                        self.check_states[path_marker] = Qt.Unchecked
+                        self.disabled_nodes_paths.add(path_marker)
             parent = self._parent_of(parent)
 
     def clear_all_checks(self):
@@ -111,13 +119,20 @@ class TreeHandlerMixin:
         try:
             path_marker = item.data(0, Qt.UserRole)
             state = item.checkState(0)
-            debug(f"[GUI] Item geändert: {path_marker}, State={state}")
+            if isinstance(path_marker, list):
+                path_marker = tuple(path_marker)
+            debug(f"[GUI] Item geändert: {' / '.join(path_marker)}, State={state}")
             if path_marker:
-                self.check_states[str(path_marker)] = state
+                self.check_states[path_marker] = state
                 if state == Qt.Checked:
-                    self.disabled_nodes_paths.discard(str(path_marker))
+                    # Checked: sicherstellen, dass nicht als disabled geführt
+                    self.disabled_nodes_paths.discard(path_marker)
+                elif state == Qt.Unchecked:
+                    # Unchecked: als disabled führen
+                    self.disabled_nodes_paths.add(path_marker)
                 else:
-                    self.disabled_nodes_paths.add(str(path_marker))
+                    # PartiallyChecked: NICHT als disabled führen
+                    self.disabled_nodes_paths.discard(path_marker)
 
             if state == Qt.Checked:
                 self._propagate_up_on_child_checked(item)
@@ -125,8 +140,9 @@ class TreeHandlerMixin:
                 if item.childCount() > 0 and _any_child_checked_or_partial(item):
                     item.setCheckState(0, Qt.PartiallyChecked)
                     if path_marker:
-                        self.check_states[str(path_marker)] = Qt.PartiallyChecked
-                        self.disabled_nodes_paths.add(str(path_marker))
+                        self.check_states[path_marker] = Qt.PartiallyChecked
+                        # PartiallyChecked nicht disabled
+                        self.disabled_nodes_paths.discard(path_marker)
                     self._propagate_up_on_child_checked(item)
                 else:
                     self._propagate_up_on_child_unchecked(item)
@@ -137,4 +153,3 @@ class TreeHandlerMixin:
         except Exception as e:
             debug(f"[GUI] Fehler bei Tree-Änderung: {e}")
             self.statusBar().showMessage("Fehler beim Aktualisieren der Aktenstrukturen.")
-        

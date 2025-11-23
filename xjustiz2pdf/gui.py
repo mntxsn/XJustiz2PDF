@@ -27,13 +27,14 @@ GUI-Modulstruktur
 
 """
 import os
+import requests  # NEU: GitHub API für Release-Check
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QGridLayout, QHBoxLayout,
     QLabel, QLineEdit, QPushButton, QCheckBox, QComboBox,
-    QGroupBox, QRadioButton
+    QGroupBox, QRadioButton, QVBoxLayout
 )
 from PySide6.QtGui import QIcon
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QSettings, Qt  # NEU: Qt für Zentrierung
 from .parser import AktenParser, DocNode
 from .pdfbuilder import PDFBuilder
 from .utils import find_ghostscript, resource_path
@@ -75,11 +76,29 @@ class MainWindow(QMainWindow,
         self._setup_persistence_hooks()
         self.statusBar().showMessage("Bereit.")
 
+    def _check_latest_release(self):
+        """
+        Gibt (latest_tag, release_url) zurück, oder (None, None) bei Fehler/Offline.
+        """
+        try:
+            url = "https://api.github.com/repos/digidigital/XJustiz2PDF/releases/latest"
+            r = requests.get(url, timeout=5)
+            r.raise_for_status()
+            data = r.json()
+            return data.get("tag_name"), data.get("html_url")
+        except Exception:
+            return None, None
+
     def _setup_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
-        grid = QGridLayout(central)
+        main_layout = QVBoxLayout(central)
+
+        # Grid-Layout für Hauptinhalte
+        grid_container = QWidget()
+        grid = QGridLayout(grid_container)
         grid.setColumnStretch(1, 1)
+        main_layout.addWidget(grid_container)
 
         # Eingabe
         self.input_label = QLabel("Eingabe:")
@@ -164,7 +183,6 @@ class MainWindow(QMainWindow,
         self.build_btn.setEnabled(False)
         self.update_build_button_style()
         grid.addWidget(self.build_btn, 8, 0, 1, 3)
-
         # Links
         links_layout = QHBoxLayout()
         self.help_link = QLabel(
@@ -179,10 +197,26 @@ class MainWindow(QMainWindow,
         self.homepage_link.setOpenExternalLinks(True)
         links_layout.addStretch(1)
         links_layout.addWidget(self.help_link)
-        links_layout.addStretch(2)
+        
+        # Versionshinweis zwischen den Links
+        latest_tag, release_url = self._check_latest_release()
+        if latest_tag and latest_tag != __version__:
+            links_layout.addStretch(1)
+            self.update_label = QLabel(
+                f'<a href="{release_url}">Neue Version {latest_tag} verfügbar</a>'
+            )
+            #self.update_label.setAlignment(Qt.AlignCenter)
+            self.update_label.setStyleSheet("font-size: 8pt;")
+            self.update_label.setOpenExternalLinks(True)
+            links_layout.addWidget(self.update_label)
+            links_layout.addStretch(1)
+        else:
+            links_layout.addStretch(2)
         links_layout.addWidget(self.homepage_link)
         links_layout.addStretch(1)
         grid.addLayout(links_layout, 9, 0, 1, 3)
+
+
 
     def _setup_persistence_hooks(self):
         self.filter_edit.textChanged.connect(
