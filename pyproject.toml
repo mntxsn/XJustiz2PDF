@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xjustiz2pdf"
-version = "0.1.2"
+version = "0.1.3"
 description = "Diese Desktopanwendung konvertiert XJustiz-Akten / E-Akten in eine Gesamt-PDF (PDF-Converter for electronic records)"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -48,3 +48,4 @@ exclude-package-data = { "xjustiz2pdf.fonts" = ["*"], "xjustiz2pdf.icons" = ["*"
 
 [tool.setuptools.package-data]
 "xjustiz2pdf" = ["icons/*", "fonts/*"]
+
