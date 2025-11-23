@@ -17,7 +17,8 @@ dependencies = [
   "pypdf",
   "fpdf2",
   "Pillow",
-  "docx2pdf"
+  "docx2pdf",
+  "requests"
 ]
 requires-python = ">=3.9"
 
@@ -48,4 +49,5 @@ exclude-package-data = { "xjustiz2pdf.fonts" = ["*"], "xjustiz2pdf.icons" = ["*"
 
 [tool.setuptools.package-data]
 "xjustiz2pdf" = ["icons/*", "fonts/*"]
+
 
