@@ -214,7 +214,7 @@ class MainWindow(QMainWindow,
         if latest_tag and latest_tag != __version__:
             links_layout.addStretch(1)
             self.update_label = QLabel(
-                f'<a href="{release_url}">Neue Versioni {latest_tag} verfügbar</a>'
+                f'<a href="{release_url}">Neue Version {latest_tag} verfügbar</a>'
             )
             
             self.update_label.setStyleSheet("font-size: 8pt;")
