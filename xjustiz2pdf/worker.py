@@ -16,6 +16,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # worker.py — unveränderte Schnittstellen; Build intern parallelisiert
 
+'''
+worker.py
+'''
+
 import os, sys, subprocess, tempfile, shutil
 from PySide6.QtCore import QObject, Signal
 from .utils import prepare_input, cleanup_temp, debug

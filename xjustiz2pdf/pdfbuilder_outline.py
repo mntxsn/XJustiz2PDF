@@ -1,4 +1,4 @@
-# Xjustiz2PDF is a desktop application that converts German xJustiz 
+# XJustiz2PDF is a desktop application that converts German xJustiz 
 # e‑files (E-Akte) into a single PDF document
 # Copyright (C) 2025 Björn Seipel
 #

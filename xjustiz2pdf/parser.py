@@ -1,4 +1,4 @@
-# Xjustiz2PDF is a desktop application that converts German xJustiz 
+# XJustiz2PDF is a desktop application that converts German xJustiz 
 # e‑files (E-Akte) into a single PDF document
 # Copyright (C) 2025 Björn Seipel
 #
@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """
+parser.py
 Dieses Modul enthält die Datenklasse DocNode und den AktenParser.
 Der Parser liest XJustiz-XML-Dateien (oder entpackte ZIPs) und baut eine Baumstruktur von DocNode-Objekten.
 """

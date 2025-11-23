@@ -4,3 +4,4 @@ pypdf
 fpdf2
 Pillow
 docx2pdf
+requests

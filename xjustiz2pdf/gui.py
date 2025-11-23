@@ -1,4 +1,4 @@
-# Xjustiz2PDF is a desktop application that converts German xJustiz 
+# XJustiz2PDF is a desktop application that converts German xJustiz 
 # e‑files (E-Akte) into a single PDF document
 # Copyright (C) 2025 Björn Seipel
 #
@@ -214,45 +214,13 @@ class MainWindow(QMainWindow,
         if latest_tag and latest_tag != __version__:
             links_layout.addStretch(1)
             self.update_label = QLabel(
-                f'<a href="{release_url}">Neue Version {latest_tag} verfügbar</a>'
-            )
-            #self.update_label.setAlignment(Qt.AlignCenter)
-            self.update_label.setStyleSheet("font-size: 8pt;")
-            self.update_label.setOpenExternalLinks(True)
-            links_layout.addWidget(self.update_label)
-            links_layout.addStretch(1)
-        else:
-            links_layout.addStretch(2)
-        links_layout.addWidget(self.homepage_link)
-        links_layout.addStretch(1)
-        grid.addLayout(links_layout, 9, 0, 1, 3)
-        # Links (Fortsetzung)
-        links_layout = QHBoxLayout()
-        self.help_link = QLabel(
-            '<a href="https://github.com/digidigital/XJustiz2PDF/issues">Hilfe & Support</a>'
-        )
-        self.homepage_link = QLabel(
-            '<a href="https://xjustiz2pdf.digidigital.de">XJustiz2PDF Homepage</a>'
-        )
-        self.help_link.setStyleSheet("font-size: 8pt;")
-        self.homepage_link.setStyleSheet("font-size: 8pt;")
-        self.help_link.setOpenExternalLinks(True)
-        self.homepage_link.setOpenExternalLinks(True)
-        links_layout.addStretch(1)
-        links_layout.addWidget(self.help_link)
-        
-        # Versionshinweis zwischen den Links
-        latest_tag, release_url = self._check_latest_release()
-        if latest_tag and latest_tag != __version__:
-            links_layout.addStretch(1)
-            self.update_label = QLabel(
-                f'<a href="{release_url}">Neue Version {latest_tag} verfügbar</a>'
+                f'<a href="{release_url}">Neue Versioni {latest_tag} verfügbar</a>'
             )
             
             self.update_label.setStyleSheet("font-size: 8pt;")
             self.update_label.setOpenExternalLinks(True)
             links_layout.addWidget(self.update_label)
-            links_layout.addStretch(1)
+            links_layout.addStretch(1)            
         else:
             links_layout.addStretch(2)
         links_layout.addWidget(self.homepage_link)

@@ -49,5 +49,3 @@ exclude-package-data = { "xjustiz2pdf.fonts" = ["*"], "xjustiz2pdf.icons" = ["*"
 
 [tool.setuptools.package-data]
 "xjustiz2pdf" = ["icons/*", "fonts/*"]
-
-

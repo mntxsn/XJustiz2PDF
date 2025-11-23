@@ -1,4 +1,4 @@
-# Xjustiz2PDF is a desktop application that converts German xJustiz 
+# XJustiz2PDF is a desktop application that converts German xJustiz 
 # e‑files (E-Akte) into a single PDF document
 # Copyright (C) 2025 Björn Seipel
 #
@@ -14,6 +14,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+'''
+gui_build.py
+'''
 
 from PySide6.QtWidgets import QMessageBox, QTreeWidgetItem
 from PySide6.QtCore import QThread, Qt
