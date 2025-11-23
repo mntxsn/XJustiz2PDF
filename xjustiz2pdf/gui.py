@@ -126,9 +126,19 @@ class MainWindow(QMainWindow,
         # Ausfiltern
         self.filter_label = QLabel("Ausfiltern:")
         self.filter_edit = QLineEdit()
+        self.filter_btn = QPushButton("Technische Dateien")
+        self.filter_btn.clicked.connect(
+            lambda: self.filter_edit.setText(".pks .p7s .xml .pkcs7")
+        )
         grid.addWidget(self.filter_label, 5, 0)
-        grid.addWidget(self.filter_edit, 5, 1, 1, 2)
+        grid.addWidget(self.filter_edit, 5, 1)
+        grid.addWidget(self.filter_btn, 5, 2)
         self.filter_edit.setText(self.settings.value("filter_terms", ""))
+
+        # Buttons symmetrisch machen
+        self.input_btn.setMinimumWidth(140)
+        self.out_btn.setMinimumWidth(140)
+        self.filter_btn.setMinimumWidth(140)
 
         # Optionen
         self.only_originals_cb = QCheckBox("Nur Originale/Repräsentate exportieren")
@@ -183,6 +193,7 @@ class MainWindow(QMainWindow,
         self.build_btn.setEnabled(False)
         self.update_build_button_style()
         grid.addWidget(self.build_btn, 8, 0, 1, 3)
+
         # Links
         links_layout = QHBoxLayout()
         self.help_link = QLabel(
@@ -215,8 +226,38 @@ class MainWindow(QMainWindow,
         links_layout.addWidget(self.homepage_link)
         links_layout.addStretch(1)
         grid.addLayout(links_layout, 9, 0, 1, 3)
-
-
+        # Links (Fortsetzung)
+        links_layout = QHBoxLayout()
+        self.help_link = QLabel(
+            '<a href="https://github.com/digidigital/XJustiz2PDF/issues">Hilfe & Support</a>'
+        )
+        self.homepage_link = QLabel(
+            '<a href="https://xjustiz2pdf.digidigital.de">XJustiz2PDF Homepage</a>'
+        )
+        self.help_link.setStyleSheet("font-size: 8pt;")
+        self.homepage_link.setStyleSheet("font-size: 8pt;")
+        self.help_link.setOpenExternalLinks(True)
+        self.homepage_link.setOpenExternalLinks(True)
+        links_layout.addStretch(1)
+        links_layout.addWidget(self.help_link)
+        
+        # Versionshinweis zwischen den Links
+        latest_tag, release_url = self._check_latest_release()
+        if latest_tag and latest_tag != __version__:
+            links_layout.addStretch(1)
+            self.update_label = QLabel(
+                f'<a href="{release_url}">Neue Version {latest_tag} verfügbar</a>'
+            )
+            
+            self.update_label.setStyleSheet("font-size: 8pt;")
+            self.update_label.setOpenExternalLinks(True)
+            links_layout.addWidget(self.update_label)
+            links_layout.addStretch(1)
+        else:
+            links_layout.addStretch(2)
+        links_layout.addWidget(self.homepage_link)
+        links_layout.addStretch(1)
+        grid.addLayout(links_layout, 9, 0, 1, 3)
 
     def _setup_persistence_hooks(self):
         self.filter_edit.textChanged.connect(
