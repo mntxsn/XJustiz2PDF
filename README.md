@@ -22,8 +22,10 @@ Die Anwendung ist weitestgehend plattformunabhängig und läuft somit unter Wind
   ```bash
   pip install xjustiz2pdf
   ```
-- (Optional) Installiere LibreOffice über einen Paketmanager oder nach Download von: [LibreOffice Download-Seite](https://de.libreoffice.org/download/download/)
-- (Optional) Installiere Ghostscript über einen Paketmanager oder nach Download von: [Ghostscript Download-Seite](https://ghostscript.com/releases/gsdnld.html)
+- (Optional) Installiere LibreOffice über einen Paketmanager oder nach Download von:
+  - [LibreOffice Download-Seite](https://de.libreoffice.org/download/download/)
+- (Optional) Installiere Ghostscript über einen Paketmanager oder nach Download von:
+  - [Ghostscript Download-Seite](https://ghostscript.com/releases/gsdnld.html)
 
 Start des Prgramms mit:  
   ```bash
