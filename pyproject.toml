@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xjustiz2pdf"
-version = "0.1.3"
+version = "0.1.4"
 description = "Diese Desktopanwendung konvertiert XJustiz-Akten / E-Akten in eine Gesamt-PDF (PDF-Converter for electronic records)"
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -39,8 +39,8 @@ xjustiz2pdf = "xjustiz2pdf.__main__:main"
 
 [project.urls]
 Homepage = "https://xjustiz2pdf.digidigital.de"
-Repository = "https://github.com/digidigital/XJustiz2PDF"
-Support = "https://github.com/digidigital/XJustiz2PDF/issues"
+Repository = "https://github.com/mntxsn/XJustiz2PDF"
+Support = "https://github.com/mntxsn/XJustiz2PDF/issues"
 
 [tool.setuptools]
 include-package-data = true

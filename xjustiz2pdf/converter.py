@@ -302,6 +302,33 @@ def convert_to_pdf(input_path: str, tmpdir: str, font_dir: str) -> Optional[str]
     return _write_placeholder_pdf(f"Nicht unterstützte Erweiterung: {ext}", font_dir)
 
 
+def render_text_to_pdf(text: str, font_dir: str, title: Optional[str] = None) -> str:
+    """
+    Rendert generierten Text (z. B. einen Registerauszug) in ein mehrseitiges PDF.
+    Nutzt den Ubuntu-Font und automatischen Seitenumbruch (fpdf2 multi_cell).
+    Bei Fehlern wird ein Platzhalter-PDF erzeugt.
+    """
+    tmp_fd, tmp_path = tempfile.mkstemp(prefix="xmlpdf_", suffix="_text.pdf")
+    os.close(tmp_fd)
+    try:
+        pdf = _fpdf_new_page_with_ubuntu(font_dir)
+        pdf.set_auto_page_break(auto=True, margin=50)
+        pdf.set_xy(50, 50)
+        if title:
+            pdf.set_font("Ubuntu", "", 15)
+            pdf.multi_cell(495, 20, title)
+            pdf.ln(6)
+        pdf.set_font("Ubuntu", "", 11)
+        pdf.set_x(50)
+        pdf.multi_cell(495, 15, text)
+        pdf.output(tmp_path)
+        debug(f"[Converter] Text-PDF erstellt: {tmp_path}")
+        return tmp_path
+    except Exception as e:
+        debug(f"[Converter] Fehler beim Erstellen der Text-PDF: {e}")
+        return _write_placeholder_pdf(f"Inhalt konnte nicht gerendert werden: {e}", font_dir)
+
+
 def placeholder_for_unconvertible(input_path: Optional[str], reason: str, font_dir: str) -> str:
     filename = os.path.basename(input_path or "")
     message = f"Datei {filename} konnte bei der Aktenerstellung nicht konvertiert werden.\n\nGrund: {reason}"

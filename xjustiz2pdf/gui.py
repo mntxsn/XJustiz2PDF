@@ -81,7 +81,7 @@ class MainWindow(QMainWindow,
         Gibt (latest_tag, release_url) zurück, oder (None, None) bei Fehler/Offline.
         """
         try:
-            url = "https://api.github.com/repos/digidigital/XJustiz2PDF/releases/latest"
+            url = "https://api.github.com/repos/mntxsn/XJustiz2PDF/releases/latest"
             r = requests.get(url, timeout=5)
             r.raise_for_status()
             data = r.json()

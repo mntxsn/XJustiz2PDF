@@ -27,7 +27,7 @@ from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 from .parser import DocNode
 from .utils import debug
-from .converter import convert_to_pdf, placeholder_for_unconvertible
+from .converter import convert_to_pdf, placeholder_for_unconvertible, render_text_to_pdf
 
 # Hinweis: Platzhalter werden jetzt per fpdf2 in converter.py erstellt, mit Ubuntu-Font und Zeilenumbruch.
 
@@ -66,6 +66,11 @@ def render_document_or_placeholder(node: DocNode, base_dir: str) -> str:
     - Fehler → Platzhalter-PDF mit Ubuntu-Font und Zeilenumbruch
     """
     font_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".", "fonts")
+
+    # Generierter Inhalt (z. B. Registerauszug) ohne zugrundeliegende Datei
+    if node.text_content:
+        debug(f"[Utils] Rendere generierten Inhalt für {node.anzeigename}.")
+        return render_text_to_pdf(node.text_content, font_dir, title=node.anzeigename)
 
     if not node.file_path:
         debug(f"[Utils] Kein file_path für {node.anzeigename} – Platzhalter.")

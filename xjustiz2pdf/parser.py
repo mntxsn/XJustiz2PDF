@@ -27,6 +27,7 @@ from typing import List, Optional
 from datetime import datetime
 from lxml import etree
 from .utils import debug
+from .register import build_register_text, register_message_title
 
 
 def first_non_none(*elements):
@@ -45,6 +46,7 @@ class DocNode:
     date_iso: Optional[str] = None
     file_path: Optional[str] = None
     bestandteil_code: Optional[str] = None
+    text_content: Optional[str] = None  # generierter Inhalt (z. B. Registerauszug) statt Datei
     children: List["DocNode"] = field(default_factory=list)
 
     def is_folder(self): return self.type == "folder"
@@ -81,8 +83,32 @@ class AktenParser:
                 akten.append(self._parse_folder(child))
 
         children = docs_first + akten
+
+        # Strukturierte Registerdaten (z. B. HR-Auszug) als eigenen Ordner ergänzen.
+        # Solche Nachrichten enthalten oft keine Schriftgutobjekte/Dokumente.
+        register_node = self._build_register_node(root_el)
+        if register_node is not None:
+            children.append(register_node)
+
         debug(f"[Parser] Root hat {len(children)} Kinder")
         return DocNode("folder", "", children=children)
+
+    def _build_register_node(self, root_el) -> Optional[DocNode]:
+        """Erzeugt aus fachdatenRegister einen Ordner mit einem generierten Inhalts-Dokument."""
+        try:
+            text = build_register_text(root_el)
+        except Exception as e:
+            debug(f"[Parser] Registerextraktion fehlgeschlagen: {e}")
+            return None
+        if not text:
+            return None
+        title = register_message_title(root_el)
+        debug(f"[Parser] Registerknoten erzeugt: {title}")
+        # bestandteil_code="001" (Original): Der generierte Registerinhalt ist die
+        # maßgebliche Primärinformation und darf vom "Nur Originale"-Filter nicht
+        # entfernt werden (er hätte sonst keinen Code und würde ausgefiltert).
+        doc = DocNode("doc", title, text_content=text, bestandteil_code="001")
+        return DocNode("folder", title, children=[doc])
 
     def _parse_folder(self, el) -> DocNode:
         anzeigename = self._find_text_ns(el, self.TAG_ANZEIGENAME) or "Akte"
